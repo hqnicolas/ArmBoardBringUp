@@ -563,16 +563,6 @@
 	status = "okay";
 };
 
-&brcmf: wifi@1 {
-	compatible = "brcm,bcm4329-fmac";
-	reg = <1>;
-	interrupt-parent = <&gpio3>;
-	interrupts = <RK_PC0 IRQ_TYPE_LEVEL_HIGH>;
-	interrupt-names = "host-wake";
-	pinctrl-names = "default";
-	pinctrl-0 = <&wifi_host_wake_h>;
-};
-
 &tsadc {
 	status = "okay";
 };
