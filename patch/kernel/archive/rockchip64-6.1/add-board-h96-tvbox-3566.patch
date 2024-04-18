@@ -77,7 +77,7 @@ index 000000000..6a53d23a5
 +			gpios = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
 +			linux,default-trigger = "default-on";
 +			pinctrl-names = "default";
-+			pinctrl-0 = <&led_status_enable_h>;
++			pinctrl-0 = <&led_power_enable_h>;
 +		};
 +
 +	};
@@ -515,8 +515,10 @@ index 000000000..6a53d23a5
 +		led_status_enable_h: led-status-enable-h {
 +			rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
++		led_power_enable_h: led_power_enable_h {
++			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
 +	};
-+};
 +
 +&pmu_io_domains {
 +	pmuio1-supply = <&vcc3v3_pmu>;
