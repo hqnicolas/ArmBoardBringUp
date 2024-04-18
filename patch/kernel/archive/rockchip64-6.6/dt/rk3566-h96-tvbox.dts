@@ -468,7 +468,7 @@
 			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_down>;
 		};
 
-	wifi_host_wake_h: wifi-host-wake-l {
+		wifi_host_wake_h: wifi-host-wake-l {
 			rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
