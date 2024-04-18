@@ -133,7 +133,7 @@
 		clock-names = "ext_clock";
 		pinctrl-names = "default";
 		pinctrl-0 = <&wifi_enable_h>;
-		reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_HIGH>;
 		post-power-on-delay-ms = <100>;
 	};
 	
