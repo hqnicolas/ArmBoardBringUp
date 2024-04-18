@@ -54,6 +54,14 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_status_enable_h>;
 		};
+		led_power: led-power {
+			label = "led-power";
+			gpios = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "default-on";
+			pinctrl-names = "default";
+			pinctrl-0 = <&led_status_enable_h>;
+		};
+	
 	};
 
 	vbus: vbus-regulator {
