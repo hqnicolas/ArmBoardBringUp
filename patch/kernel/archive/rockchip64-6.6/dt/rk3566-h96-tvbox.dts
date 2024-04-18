@@ -59,7 +59,7 @@
 			gpios = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "default-on";
 			pinctrl-names = "default";
-			pinctrl-0 = <&led_status_enable_h>;
+			pinctrl-0 = <&led_power_enable_h>;
 		};
 	
 	};
