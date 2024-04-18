@@ -125,8 +125,8 @@
 		clocks = <&rk809 1>;
 		clock-names = "ext_clock";
 		pinctrl-names = "default";
-		pinctrl-0 = <&wifi_enable_h>;
-		reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
+		pinctrl-0 = <&wifi_enable_h &wifi_32k>;
+		reset-gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_LOW>;
 		post-power-on-delay-ms = <100>;
 	};
 	
@@ -469,6 +469,20 @@
 		};
 	};
 
+	sdio-pwrseq {
+		wifi_enable_h: wifi-enable-h {
+			rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		wifi_host_wake_h: wifi-host-wake-l {
+			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		wifi_32k: wifi-32k {
+			rockchip,pins = <0 RK_PC0 1 &pcfg_pull_none>;
+		};
+	};
+
 	usb {
 		vcc5v0_host_en: vcc5v0-host-en {
 			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -557,6 +571,16 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk>;
 	status = "okay";
+};
+
+&brcmf: wifi@1 {
+	compatible = "brcm,bcm4329-fmac";
+	reg = <1>;
+	interrupt-parent = <&gpio0>;
+	interrupts = <RK_PC5 IRQ_TYPE_LEVEL_HIGH>;
+	interrupt-names = "host-wake";
+	pinctrl-names = "default";
+	pinctrl-0 = <&wifi_host_wake_h>;
 };
 
 &tsadc {
