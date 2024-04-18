@@ -104,6 +104,26 @@
 		post-power-on-delay-ms = <100>;
 	};
 
+	vcc5v0_host: vcc5v0-host-regulator {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vcc5v0_host_en>;
+		regulator-name = "vcc5v0_host";
+		regulator-always-on;
+	};
+
+	vcc5v0_otg: vcc5v0-otg-regulator {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&vcc5v0_otg_en>;
+		regulator-name = "vcc5v0_otg";
+		regulator-always-on;
+	};
+
 	wireless_wlan: wireless-wlan {
 		compatible = "wlan-platdata";
 		rockchip,grf = <&grf>;
@@ -158,7 +178,7 @@
 		     &gmac1m0_rgmii_clk
 		     &gmac1m0_clkinout
 		     &gmac1m0_rgmii_bus>;
-	snps,reset-gpio = <&gpio3 RK_PA1 GPIO_ACTIVE_LOW>;
+	snps,reset-gpio = <&gpio0 RK_PB7 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
 	/* Reset time is 20ms, 100ms for rtl8211f, also works well here */
 	snps,reset-delays-us = <0 20000 100000>;
