@@ -61,6 +61,13 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_power_enable_h>;
 		};
+			led_wifi: led-wifi {
+			label = "led-wifi";
+			gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "default-on";
+			pinctrl-names = "default";
+			pinctrl-0 = <&led_wifi_enable_h>;
+		};
 	
 	};
 
@@ -126,7 +133,7 @@
 		clock-names = "ext_clock";
 		pinctrl-names = "default";
 		pinctrl-0 = <&wifi_enable_h>;
-		reset-gpios = <&gpio2 RK_PA0 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
 		post-power-on-delay-ms = <100>;
 	};
 	
@@ -135,8 +142,9 @@
 		rockchip,grf = <&grf>;
 		wifi_chip_type = "ap6398s";
 		pinctrl-names = "default";
-		pinctrl-0 = <&wifi_host_wake_irq>;
+		pinctrl-0 = <&wifi_host_wake_irq &wifi_host_wake_h>;
 		WIFI,host_wake_irq = <&gpio0 RK_PC5 GPIO_ACTIVE_HIGH>;
+		WIFI,host_wake_h = <&gpio3 RK_PC0 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 
@@ -459,13 +467,13 @@
 
 	sdio-pwrseq {
 		wifi_enable_h: wifi-enable-h {
-			rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
+			rockchip,pins = <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
 	wireless-wlan {
 		wifi_host_wake_irq: wifi-host-wake-irq {
-			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_down>;
+			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
 		wifi_host_wake_h: wifi-host-wake-l {
@@ -503,6 +511,9 @@
 		};
 		led_power_enable_h: led_power_enable_h {
 			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+		led_wifi_enable_h: led_wifi_enable_h {
+		rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 };
