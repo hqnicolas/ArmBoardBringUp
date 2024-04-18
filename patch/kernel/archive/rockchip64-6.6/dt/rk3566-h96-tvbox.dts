@@ -458,6 +458,14 @@
 };
 
 &pinctrl {
+	pinctrl-names = "default";
+	pinctrl-0 = <&clk_32k_out>;
+
+	clk_32k {
+		clk_32k_out: clk-32k-out {
+			rockchip,pins =	<2 RK_PC6 1 &pcfg_pull_none>;
+        	};
+	};
 
 	pmic {
 		pmic_int_l: pmic-int-l {
