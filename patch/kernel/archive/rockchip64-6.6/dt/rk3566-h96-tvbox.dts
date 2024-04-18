@@ -93,25 +93,27 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	vcc5v0_usb_host: regulator-vcc5v0-usb-host {
+	vcc5v0_host: vcc5v0-host-regulator {
 		compatible = "regulator-fixed";
+		regulator-name = "vcc5v0_host";
 		enable-active-high;
 		gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb_host_en>;
-		regulator-name = "vcc5v0_usb_host";
+		pinctrl-0 = <&vcc5v0_host_en>;
+		regulator-always-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	vcc5v0_usb2_otg: regulator-vcc5v0-usb2-otg {
+	vcc5v0_otg: vcc5v0-otg-regulator {
 		compatible = "regulator-fixed";
+		regulator-name = "vcc5v0_otg";
 		enable-active-high;
 		gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb2_otg_en>;
-		regulator-name = "vcc5v0_usb_otg";
+		pinctrl-0 = <&vcc5v0_otg_en>;
+		regulator-always-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_sys>;
