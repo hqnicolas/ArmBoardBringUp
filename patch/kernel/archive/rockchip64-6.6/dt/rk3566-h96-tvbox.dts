@@ -54,6 +54,7 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_status_enable_h>;
 		};
+
 		led_power: led-power {
 			label = "led-power";
 			gpios = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
@@ -61,15 +62,6 @@
 			pinctrl-names = "default";
 			pinctrl-0 = <&led_power_enable_h>;
 		};
-		
-			led_wifi: led-wifi {
-			label = "led-wifi";
-			gpios = <&gpio2 RK_PB2 GPIO_ACTIVE_HIGH>;
-			linux,default-trigger = "default-on";
-			pinctrl-names = "default";
-			pinctrl-0 = <&led_wifi_enable_h>;
-		};
-	
 	};
 
 	vbus: vbus-regulator {
@@ -137,17 +129,6 @@
 		reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_HIGH>;
 		post-power-on-delay-ms = <100>;
 	};
-	
-	wireless_wlan: wireless-wlan {
-		compatible = "wlan-platdata";
-		rockchip,grf = <&grf>;
-		wifi_chip_type = "ap6398s";
-		pinctrl-names = "default";
-		pinctrl-0 = <&wifi_host_wake_irq>;
-		WIFI,host_wake_irq = <&gpio2 RK_PB2 GPIO_ACTIVE_HIGH>;
-		status = "okay";
-	};
-
 };
 
 &combphy1 {
@@ -267,7 +248,7 @@
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
 		vcc3-supply = <&vcc3v3_sys>;
-		vcc4-supply = <&vcc3v3_sys>;
+		vcc4-supply = <&vcc1v8_sys>;
 		vcc5-supply = <&vcc3v3_sys>;
 		vcc6-supply = <&vcc3v3_sys>;
 		vcc7-supply = <&vcc3v3_sys>;
@@ -458,15 +439,6 @@
 };
 
 &pinctrl {
-	pinctrl-names = "default";
-	pinctrl-0 = <&clk_32k_out>;
-
-	clk_32k {
-		clk_32k_out: clk-32k-out {
-			rockchip,pins =	<2 RK_PC6 1 &pcfg_pull_none>;
-        	};
-	};
-
 	pmic {
 		pmic_int_l: pmic-int-l {
 			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
@@ -476,12 +448,6 @@
 	sdio-pwrseq {
 		wifi_enable_h: wifi-enable-h {
 			rockchip,pins = <2 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-
-	wireless-wlan {
-		wifi_host_wake_irq: wifi-host-wake-irq {
-			rockchip,pins = <2 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -515,9 +481,6 @@
 		};
 		led_power_enable_h: led_power_enable_h {
 			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-		led_wifi_enable_h: led_wifi_enable_h {
-		rockchip,pins = <2 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 };
