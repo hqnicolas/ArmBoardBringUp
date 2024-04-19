@@ -248,7 +248,7 @@
 		vcc1-supply = <&vcc3v3_sys>;
 		vcc2-supply = <&vcc3v3_sys>;
 		vcc3-supply = <&vcc3v3_sys>;
-		vcc4-supply = <&vcc1v8_sys>;
+		vcc4-supply = <&vcc3v3_sys>;
 		vcc5-supply = <&vcc3v3_sys>;
 		vcc6-supply = <&vcc3v3_sys>;
 		vcc7-supply = <&vcc3v3_sys>;
