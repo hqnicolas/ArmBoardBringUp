@@ -166,7 +166,6 @@ index 000000000..6a53d23a5
 +		status = "okay";
 +	};
 +
-+};
 +
 +&combphy1 {
 +       status = "okay";
@@ -673,4 +672,5 @@ index 000000000..6a53d23a5
 +		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
 +		remote-endpoint = <&hdmi_in_vp0>;
 +	};
++};
 +};
