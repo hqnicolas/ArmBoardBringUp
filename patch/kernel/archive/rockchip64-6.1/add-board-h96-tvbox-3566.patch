@@ -663,6 +663,10 @@ index 000000000..6a53d23a5
 +	status = "okay";
 +};
 +
++&pwm3 {
++	status = "okay";
++};
++
 +&saradc {
 +	vref-supply = <&vcca_1v8>;
 +	status = "okay";
@@ -688,16 +692,12 @@ index 000000000..6a53d23a5
 +	disable-wp;
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
-+	sd-uhs-sdr104;
 +	vmmc-supply = <&vcc3v3_sd>;
 +	vqmmc-supply = <&vccio_sd>;
 +	status = "okay";
 +};
 +
 +&sdmmc1 {
-+	/* WiFi & BT combo module AMPAK AP6335 */
-+	#address-cells = <1>;
-+	#size-cells = <0>;
 +	bus-width = <4>;
 +	cap-sd-highspeed;
 +	cap-sdio-irq;
@@ -705,23 +705,11 @@ index 000000000..6a53d23a5
 +	keep-power-in-suspend;
 +	mmc-pwrseq = <&sdio_pwrseq>;
 +	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk>;
-+	sd-uhs-sdr50;
-+	supports-sdio;
-+	status = "okay";
 +	vmmc-supply = <&vcc3v3_sys>;
 +	vqmmc-supply = <&vcca1v8_pmu>;
-+
-+	brcmf: wifi@1 {
-+		compatible = "brcm,bcm4329-fmac";
-+		reg = <1>;
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <RK_PB2 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "host-wake";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&wifi_host_wake_h>;
-+	};
++	pinctrl-names = "default";
++	pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk &uart9m1_xfer &uart8m1_xfer>;
++	status = "okay";
 +};
 +
 +&sdmmc2 {
