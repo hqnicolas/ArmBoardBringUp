@@ -26,6 +26,7 @@ index 000000000..6a53d23a5
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/input/input.h>
 +#include <dt-bindings/pinctrl/rockchip.h>
++#include <dt-bindings/pwm/pwm.h>
 +#include <dt-bindings/soc/rockchip,vop2.h>
 +#include "rk3566.dtsi"
 +
@@ -296,14 +297,14 @@ index 000000000..6a53d23a5
 +	vdd_cpu: regulator@1c {
 +		compatible = "tcs,tcs4525";
 +		reg = <0x1c>;
-+		vin-supply = <&vcc5v0_sys>;
++		fcs,suspend-voltage-selector = <1>;
 +		regulator-name = "vdd_cpu";
 +		regulator-min-microvolt = <800000>;
 +		regulator-max-microvolt = <1150000>;
 +		regulator-ramp-delay = <2300>;
-+		fcs,suspend-voltage-selector = <1>;
 +		regulator-boot-on;
 +		regulator-always-on;
++		vin-supply = <&vcc5v0_sys>;
 +
 +		regulator-state-mem {
 +			regulator-off-in-suspend;
@@ -315,11 +316,14 @@ index 000000000..6a53d23a5
 +		reg = <0x20>;
 +		interrupt-parent = <&gpio0>;
 +		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
++		assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
++		assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
++		#sound-dai-cells = <0>;
 +		#clock-cells = <1>;
-+		clock-output-names = "rk808-clkout1", "rk808-clkout2";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pmic_int_l>;
++		clock-names = "mclk";
++		clocks = <&cru I2S1_MCLKOUT_TX>;
 +		rockchip,system-power-controller;
++		clock-output-names = "rk808-clkout1", "rk808-clkout2";
 +		wakeup-source;
 +
 +		vcc1-supply = <&vcc3v3_sys>;
@@ -525,8 +529,19 @@ index 000000000..6a53d23a5
 +			};
 +		};
 +
-+			codec {
++			rk809_codec: codec {
++				#sound-dai-cells = <0>;
++				compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
++				clocks = <&cru I2S1_MCLKOUT_TX>;
++				clock-names = "mclk";
++				assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
++				assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
++				pinctrl-names = "default";
++				pinctrl-0 = <&i2s1m0_mclk>;
++				hp-volume = <20>;
++				spk-volume = <3>;
 +				mic-in-differential;
++				status = "okay";
 +			};
 +		};
 +	};
