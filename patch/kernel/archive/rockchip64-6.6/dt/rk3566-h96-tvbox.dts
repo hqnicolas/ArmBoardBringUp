@@ -714,7 +714,6 @@
 		pinctrl-0 = <&bt_host_wake_l &bt_wake_l &bt_enable_h>;
 		vbat-supply = <&vcc3v3_sys>;
 		vddio-supply = <&vcca1v8_pmu>;
-		max-speed = <3000000>;
 	};
 };
 
