@@ -191,6 +191,7 @@ index 000000000..6a53d23a5
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&wifi_enable_h>;
 +		reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
++       post-power-on-delay-ms = <100>;
 +	};
 +
 +	rk809-sound {
@@ -387,34 +388,31 @@ index 000000000..6a53d23a5
 +			vdda0v9_image: LDO_REG1 {
 +				regulator-boot-on;
 +				regulator-always-on;
-+				regulator-name = "vdda0v9_image";
 +				regulator-min-microvolt = <900000>;
 +				regulator-max-microvolt = <900000>;
-+
++				regulator-name = "vdda0v9_image";
 +				regulator-state-mem {
 +					regulator-off-in-suspend;
 +				};
 +			};
 +
 +			vdda_0v9: LDO_REG2 {
-+				regulator-name = "vdda_0v9";
 +				regulator-always-on;
 +				regulator-boot-on;
 +				regulator-min-microvolt = <900000>;
 +				regulator-max-microvolt = <900000>;
-+
++				regulator-name = "vdda_0v9";
 +				regulator-state-mem {
 +					regulator-off-in-suspend;
 +				};
 +			};
 +
 +			vdda0v9_pmu: LDO_REG3 {
-+				regulator-name = "vdda0v9_pmu";
 +				regulator-always-on;
 +				regulator-boot-on;
 +				regulator-min-microvolt = <900000>;
 +				regulator-max-microvolt = <900000>;
-+
++				regulator-name = "vdda0v9_pmu";
 +				regulator-state-mem {
 +					regulator-on-in-suspend;
 +					regulator-suspend-microvolt = <900000>;
@@ -424,10 +422,9 @@ index 000000000..6a53d23a5
 +			vccio_acodec: LDO_REG4 {
 +				regulator-always-on;
 +				regulator-boot-on;
-+				regulator-name = "vccio_acodec";
 +				regulator-min-microvolt = <3300000>;
 +				regulator-max-microvolt = <3300000>;
-+
++				regulator-name = "vccio_acodec";
 +				regulator-state-mem {
 +					regulator-off-in-suspend;
 +				};
@@ -566,8 +563,10 @@ index 000000000..6a53d23a5
 +		wifi_enable_h: wifi-enable-h {
 +			rockchip,pins = <2 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
++	};
 +
-+		wifi_host_wake_h: wifi-host-wake-l {
++	wireless-wlan {
++		wifi_host_wake_irq: wifi-host-wake-irq {
 +			rockchip,pins = <2 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
 +	};
@@ -680,7 +679,6 @@ index 000000000..6a53d23a5
 +};
 +
 +&sdmmc1 {
-+	/* WiFi & BT combo module AMPAK AP6335 */
 +	#address-cells = <1>;
 +	#size-cells = <0>;
 +	bus-width = <4>;
@@ -705,30 +703,12 @@ index 000000000..6a53d23a5
 +		interrupts = <RK_PB2 IRQ_TYPE_LEVEL_HIGH>;
 +		interrupt-names = "host-wake";
 +		pinctrl-names = "default";
-+		pinctrl-0 = <&wifi_host_wake_h>;
++		pinctrl-0 = <&wifi_host_wake_irq>;
 +	};
-+};
-+
-+&sdmmc2 {
-+	cap-sd-highspeed;
-+	cap-sdio-irq;
-+	bus-width = <4>;
-+	vmmc-supply = <&vcc_3v3>;
-+	vqmmc-supply = <&vcca1v8_pmu>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sdmmc2m0_bus4 &sdmmc2m0_cmd &sdmmc2m0_clk>;
-+	sd-uhs-sdr104;
-+	status = "okay";
 +};
 +
 +&tsadc {
 +	status = "okay";
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_xfer>;
-+	status = "disabled";
 +};
 +
 +&uart1 {
@@ -744,6 +724,7 @@ index 000000000..6a53d23a5
 +		device-wake-gpios = <&gpio2 RK_PC1 GPIO_ACTIVE_HIGH>;
 +		host-wake-gpios = <&gpio2 RK_PC0 GPIO_ACTIVE_HIGH>;
 +		shutdown-gpios = <&gpio2 RK_PB7 GPIO_ACTIVE_HIGH>;
++		max-speed = <3000000>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&bt_host_wake_l &bt_wake_l &bt_enable_h>;
 +		vbat-supply = <&vcc3v3_sys>;
@@ -769,7 +750,6 @@ index 000000000..6a53d23a5
 +};
 +
 +&usb2phy0_otg {
-+   vbus-supply = <&vcc5v0_otg>;
 +	status = "okay";
 +};
 +
@@ -782,17 +762,14 @@ index 000000000..6a53d23a5
 +};
 +
 +&usb2phy1_host {
-+	phy-supply = <&vcc5v0_host>;
 +	status = "okay";
 +};
 +
 +&usb2phy1_otg {
-+	phy-supply = <&vcc5v0_host>;
 +	status = "okay";
 +};
 +
 +&vop {
-+	compatible = "rockchip,rk3568-vop";
 +	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
 +	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
 +	status = "okay";
