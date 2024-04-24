@@ -179,11 +179,11 @@
 	rk809-sound {
 		compatible = "simple-audio-card";
 		simple-audio-card,format = "i2s";
-		simple-audio-card,name = "Analog RK809";
+		simple-audio-card,name = "rockchip,rk809-codec";
 		simple-audio-card,mclk-fs = <256>;
 
 		simple-audio-card,cpu {
-			sound-dai = <&i2s1_8ch>;
+			sound-dai = <&i2s3_2ch>;
 		};
 		simple-audio-card,codec {
 			sound-dai = <&rk809>;
@@ -507,6 +507,18 @@
 		};
 
 			codec {
+				compatible = "rockchip,rk809-codec", "rockchip,rk817-codec";
+				clocks = <&cru I2S3_MCLKOUT>;
+				clock-names = "mclk";
+				assigned-clocks = <&cru I2S3_MCLKOUT>, <&cru I2S3_MCLK_IOE>;
+				assigned-clock-rates = <12288000>;
+				assigned-clock-parents = <&cru I2S3_MCLKOUT_TX>, <&cru I2S3_MCLKOUT>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&i2s3m1_mclk>;
+				hp-volume = <20>;
+				spk-volume = <3>;
+				mic-in-differential;
+				status = "okay";
 				mic-in-differential;
 			};
 		};
@@ -517,13 +529,17 @@
 };
 
 &i2s1_8ch {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2s1m0_sclktx
-		     &i2s1m0_lrcktx
-		     &i2s1m0_sdi0
-		     &i2s1m0_sdo0>;
-	rockchip,trcm-sync-tx-only;
+	status = "disabled";
+};
+
+&i2s3_2ch {
 	status = "okay";
+	pinctrl-names = "default";
+	rockchip,clk-trcm = <1>;
+	pinctrl-0 = <&i2s3m1_sclk
+				 &i2s3m1_lrck
+				 &i2s3m1_sdi
+				 &i2s3m1_sdo>;
 };
 
 &mdio1 {
