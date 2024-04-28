@@ -629,11 +629,11 @@
 	
 	fddis_ctr {
 		dis_ctl_clk: dis-ctl-clk {
-			rockchip,pins = <0 RK_PB3 RK_FUNC_GPIO &pcfg_pull_up>;
+			rockchip,pins = <0 RK_PB3 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 		
 		dis_ctl_dat: dis-ctl-dat {
-			rockchip,pins = <0 RK_PB4 RK_FUNC_GPIO &pcfg_pull_up>;
+			rockchip,pins = <0 RK_PB4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 };
