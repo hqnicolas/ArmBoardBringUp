@@ -1,0 +1,6 @@
+config VFD_KEYMAPS
+	tristate "vfd keymaps"
+	depends on ARM
+	default y if ARM
+	help
+	  vfd Keymaps
