@@ -1,0 +1,5 @@
+#!/bin/bash
+
+systemctl enable openvfd.service
+
+exit 0
