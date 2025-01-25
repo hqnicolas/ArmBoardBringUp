@@ -2,65 +2,26 @@
 BOARD_NAME="h96-tvbox-3566"
 BOARDFAMILY="rockchip64"
 BOARD_MAINTAINER="hqnicolas"
-BOOTCONFIG="rk3568_defconfig"
-KERNEL_TARGET="current,edge"
-FULL_DESKTOP="yes"
-BOOT_LOGO="desktop"
 BOOT_FDT_FILE="rockchip/rk3566-h96-tvbox.dtb"
+BOOT_LOGO="desktop"
+BOOT_SCENARIO="spl-blobs"
+FULL_DESKTOP="yes"
 IMAGE_PARTITION_TABLE="gpt"
+KERNEL_TARGET="current,edge"
+
+DDR_BLOB="rk35/rk3568_ddr_1560MHz_v1.21.bin"
+BL31_BLOB="rk35/rk3568_bl31_v1.44.elf"
 
 # Mainline U-Boot
 function post_family_config__h96_max_use_mainline_uboot() {
 	display_alert "$BOARD" "Using mainline U-Boot for $BOARD / $BRANCH" "info"
-
-	declare -g BOOTCONFIG="generic-rk3568_defconfig"             # Use generic defconfig which should boot all RK3568 boards
-	declare -g BOOTSOURCE="https://github.com/u-boot/u-boot.git" # We ❤️ Mainline U-Boot
-	declare -g BOOTBRANCH="tag:v2024.07"
-	declare -g BOOTPATCHDIR="v2024.07/board_${BOARD}"
-	# Don't set BOOTDIR, allow shared U-Boot source directory for disk space efficiency
-
-	declare -g UBOOT_TARGET_MAP="BL31=${RKBIN_DIR}/${BL31_BLOB} ROCKCHIP_TPL=${RKBIN_DIR}/${DDR_BLOB};;u-boot-rockchip.bin"
-
-	# Disable stuff from rockchip64_common; we're using binman here which does all the work already
+	declare -g BOOTCONFIG="h96max-v56_defconfig"
+	declare -g BOOTSOURCE="https://github.com/u-boot/u-boot.git"
+	declare -g BOOTBRANCH="tag:v2025.01"
+	declare -g BOOTPATCHDIR="v2025.01/board_${BOARD}"
+	declare -g UBOOT_TARGET_MAP="BL31=$RKBIN_DIR/$BL31_BLOB ROCKCHIP_TPL=$RKBIN_DIR/$DDR_BLOB;;u-boot-rockchip.bin"
 	unset uboot_custom_postprocess write_uboot_platform write_uboot_platform_mtd
-
-	# Just use the binman-provided u-boot-rockchip.bin, which is ready-to-go
 	function write_uboot_platform() {
 		dd "if=$1/u-boot-rockchip.bin" "of=$2" bs=32k seek=1 conv=notrunc status=none
 	}
-}
-
-function post_family_tweaks_bsp__h96_max() {
-	display_alert "$BOARD" "Installing h96_max-openvfd.service" "info"
-
-	# OpenVfd on h96max-rk3566 board is handled
-	# a custom binary, plus a systemd service to run it at boot time
-	install -m 755 $SRC/packages/bsp/h96maxrk3566/h96-max-rk3566-openvfd $destination/usr/bin/
-	cp $SRC/packages/bsp/h96maxrk3566/openvfd.service $destination/lib/systemd/system/
-	cp $SRC/packages/bsp/h96maxrk3566/openvfd.conf $destination/etc/modprobe.d/
-	return 0
-}
-
-function post_family_tweaks__h96_max_enable_services() {
-	display_alert "$BOARD" "Enabling h96_max-openvfd.service" "info"
-	chroot_sdcard systemctl enable openvfd.service
-	return 0
-}
-
-function post_family_tweaks__h96_tvbox_3566() {
-    	display_alert "$BOARD" "Installing board tweaks" "info"
-        cp -R $SRC/packages/bsp/h96maxrk3566/brcm4335_drivers/* $SDCARD/lib/firmware/brcm/
-	ln -s "../BCM4335A0.hcd" "$SDCARD/lib/firmware/brcm/BCM4335A0.h96-TVbox,rk3566.hcd"
-	ln -s "fw_bcm4335b0_ag.bin" "$SDCARD/lib/firmware/brcm/brcmfmac4335-sdio.h96-TVbox,rk3566.bin"
-	ln -s "brcmfmac4335-sdio.txt" "$SDCARD/lib/firmware/brcm/brcmfmac4335-sdio.h96-TVbox,rk3566.txt"
-        return 0
-}
-
-function post_family_tweaks__h96_max_naming_audios() {
-	display_alert "$BOARD" "Renaming h96_max audios" "info"
-	mkdir -p $SDCARD/etc/udev/rules.d/
-	echo 'SUBSYSTEM=="sound", ENV{ID_PATH}=="platform-hdmi-sound", ENV{SOUND_DESCRIPTION}="HDMI Audio"' > $SDCARD/etc/udev/rules.d/90-naming-audios.rules
-	echo 'SUBSYSTEM=="sound", ENV{ID_PATH}=="platform-rk809-sound", ENV{SOUND_DESCRIPTION}="RK809 Audio"' >> $SDCARD/etc/udev/rules.d/90-naming-audios.rules # vendor dts
-	echo 'SUBSYSTEM=="sound", ENV{ID_PATH}=="platform-sound", ENV{SOUND_DESCRIPTION}="RK809 Audio"' >> $SDCARD/etc/udev/rules.d/90-naming-audios.rules       # mainline dts
-	return 0
 }
