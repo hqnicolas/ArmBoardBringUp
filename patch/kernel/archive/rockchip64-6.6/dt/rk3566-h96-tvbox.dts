@@ -9,6 +9,7 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/soc/rockchip,vop2.h>
+#include <dt-bindings/leds/common.h>
 #include "rk3566.dtsi"
 
 / {
@@ -24,12 +25,6 @@
 
 	chosen: chosen {
 		stdout-path = "serial2:1500000n8";
-	};
-
-	openvfd {
-		compatible = "open,vfd";
-		dev_name = "openvfd";
-		status = "okay";
 	};
 
 	vcc5v0_in: vcc5v0_in {
@@ -66,13 +61,39 @@
 		pinctrl-0 = <&ir_receiver_pin>;
 		linux,rc-map-name = "rc-h96-max-v56";
 	};
-	
-	fddis_dev {
-		compatible = "fddis_dev";
-		fddis_gpio_clk = <&gpio0 RK_PB3 GPIO_ACTIVE_HIGH>;
-		fddis_gpio_dat = <&gpio0 RK_PB4 GPIO_ACTIVE_HIGH>;
-		pinctrl-0 = <&dis_ctl_clk &dis_ctl_dat>;
-		status = "okay";
+
+	i2c_aux_display: i2c-aux-display {
+		compatible = "i2c-gpio";
+		sda-gpios = <&gpio0 RK_PB4 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&gpio0 RK_PB3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+		i2c-gpio,delay-us = <5>;
+		i2c-gpio,sda-output-only;
+		i2c-gpio,scl-output-only;
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		display@24 {
+			compatible = "fdhisi,fd6551";
+			reg = <0x24>;
+			tm16xx,digits = /bits/ 8 <4 3 2 1>;
+			tm16xx,segment-mapping = /bits/ 8 <0 1 2 3 4 5 6>;
+
+			digits {
+				status = "disabled";
+			};
+
+			leds {
+				status = "disabled";
+			};
+
+			led@0,0 { reg = <0x00 0x00>; function = "alarm"; };
+			led@0,1 { reg = <0x00 0x01>; function = "usb"; linux,default-trigger = "usb-host"; };
+			led@0,2 { reg = <0x00 0x02>; function = "pause"; linux,default-trigger = "mmc2"; };
+			led@0,3 { reg = <0x00 0x03>; function = "play"; linux,default-trigger = "mmc0"; };
+			led@0,4 { reg = <0x00 0x04>; function = "colon"; };
+			led@0,5 { reg = <0x00 0x05>; function = "lan"; linux,default-trigger = "stmmac-0:00:link"; };
+			led@0,6 { reg = <0x00 0x06>; function = "wlan"; linux,default-trigger = "mmc1"; };
+		};
 	};
 
 	spdif_dit: spdif-dit {
@@ -321,7 +342,7 @@
 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pmic_int_l>;
-		rockchip,system-power-controller;
+		system-power-controller;
 		wakeup-source;
 
 		vcc1-supply = <&vcc3v3_sys>;
@@ -630,16 +651,6 @@
 	headphone {
 		hp_det: hp-det {
 			rockchip,pins = <2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-	};
-	
-	fddis_ctr {
-		dis_ctl_clk: dis-ctl-clk {
-			rockchip,pins = <0 RK_PB3 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-		
-		dis_ctl_dat: dis-ctl-dat {
-			rockchip,pins = <0 RK_PB4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 };
