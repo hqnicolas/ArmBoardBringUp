@@ -1,90 +1,118 @@
+diff --git a/arch/arm/dts/rk3568-h96max-v56-u-boot.dtsi b/arch/arm/dts/rk3568-h96max-v56-u-boot.dtsi
+new file mode 100644
+index 00000000000..3cc637d2b7c
+--- /dev/null
++++ b/arch/arm/dts/rk3568-h96max-v56-u-boot.dtsi
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++#include "rk356x-u-boot.dtsi"
++
++/ {
++	chosen {
++		stdout-path = &uart2;
++	};
++};
++
++&emmc_bus8 {
++	bootph-all;
++};
++
++&emmc_clk {
++	bootph-all;
++};
++
++&emmc_cmd {
++	bootph-all;
++};
++
++&emmc_datastrobe {
++	bootph-all;
++};
++
++&fspi_pins {
++	bootph-all;
++};
++
++&pcfg_pull_none {
++	bootph-all;
++};
++
++&saradc {
++	status = "okay";
++};
++
++&sdmmc0_bus4 {
++	bootph-all;
++};
++
++&sdmmc0_clk {
++	bootph-all;
++};
++
++&sdmmc0_cmd {
++	bootph-all;
++};
++
++&sdmmc0_det {
++	bootph-all;
++};
++
++&sfc {
++	bootph-pre-ram;
++	u-boot,spl-sfc-no-dma;
++
++	flash@0 {
++		bootph-pre-ram;
++		spi-rx-bus-width = <4>;
++		spi-tx-bus-width = <1>;
++	};
++};
++
++&uart2 {
++	clock-frequency = <24000000>;
++	bootph-all;
++	status = "okay";
++};
++
++&uart2m0_xfer {
++	bootph-all;
++};
 diff --git a/arch/arm/dts/rk3568-h96max-v56.dts b/arch/arm/dts/rk3568-h96max-v56.dts
 new file mode 100644
-index 00000000000..fe64d25a190
+index 00000000000..7d2ca16f5f7
 --- /dev/null
 +++ b/arch/arm/dts/rk3568-h96max-v56.dts
-@@ -0,0 +1,82 @@
+@@ -0,0 +1,25 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
-+ * Minimal generic DT for RK3566/RK3568 with eMMC, SD-card, SPI flash and USB OTG enabled
++ * Minimal U-Boot DT for H96 TV Box 3566 with eMMC, SD-card,
++ * SPI flash and USB OTG enabled.
 + */
 +
 +/dts-v1/;
-+#include "rk356x.dtsi"
++
++#include "rk3568.dtsi"
 +
 +/ {
-+	model = "Generic RK3566/RK3568";
-+	compatible = "rockchip,rk3568";
++	model = "h96 TVbox 3566";
++	compatible = "h96-TVbox,rk3566", "rockchip,rk3566";
 +
 +	aliases {
 +		mmc0 = &sdhci;
 +		mmc1 = &sdmmc0;
 +	};
-+
-+	chosen {
-+		stdout-path = "serial2:1500000n8";
-+	};
-+};
-+
-+&saradc {
-+	vdd-microvolts = <1800000>;
-+	status = "okay";
 +};
 +
 +&sdhci {
-+	bus-width = <8>;
-+	cap-mmc-highspeed;
-+	mmc-hs200-1_8v;
 +	no-sd;
 +	no-sdio;
 +	non-removable;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
-+	status = "okay";
 +};
 +
 +&sdmmc0 {
-+	bus-width = <4>;
-+	cap-sd-highspeed;
-+	disable-wp;
 +	no-mmc;
 +	no-sdio;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
-+	status = "okay";
-+};
-+
-+&sfc {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <24000000>;
-+	};
-+};
-+
-+&uart2 {
-+	status = "okay";
-+};
-+
-+&usb_host0_xhci {
-+	dr_mode = "peripheral";
-+	extcon = <&usb2phy0>;
-+	maximum-speed = "high-speed";
-+	phys = <&usb2phy0_otg>;
-+	phy-names = "usb2-phy";
-+	status = "okay";
-+};
-+
-+&usb2phy0 {
-+	status = "okay";
-+};
-+
-+&usb2phy0_otg {
-+	status = "okay";
 +};
 -- 
 2.49.0
