@@ -79,11 +79,11 @@
 			tm16xx,segment-mapping = /bits/ 8 <0 1 2 3 4 5 6>;
 
 			digits {
-				status = "disabled";
+				status = "okay";
 			};
 
 			leds {
-				status = "disabled";
+				status = "okay";
 			};
 
 			led@0,0 { reg = <0x00 0x00>; function = "alarm"; };
